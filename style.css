@@ -1,0 +1,321 @@
+/* Variáveis & Reset */
+:root {
+    --bg-chalkboard: #1c2b26;
+    --bg-texture: radial-gradient(circle, #253932 0%, #15221e 100%);
+    --chalk-white: rgba(245, 245, 245, 0.92);
+    --wood-border: #4a2e1b;
+    --wood-border-inner: #2d1b0f;
+    --font-hand: 'Caveat', cursive, sans-serif;
+    --font-title: 'Fredericka the Great', cursive, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-hand);
+    user-select: none;
+}
+
+body {
+    background-color: #0d1412;
+    background-image: var(--bg-texture);
+    color: var(--chalk-white);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Caixa com Moldura de Madeira e Textura de Quadro */
+.chalk-box {
+    background: var(--bg-chalkboard);
+    border: 12px solid var(--wood-border);
+    outline: 3px solid var(--wood-border-inner);
+    border-radius: 8px;
+    box-shadow: 
+        inset 0 0 40px rgba(0, 0, 0, 0.8),
+        0 10px 25px rgba(0, 0, 0, 0.7);
+    position: relative;
+    padding: 20px;
+}
+
+.chalk-box::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.04), transparent 60%);
+    pointer-events: none;
+}
+
+.chalk-header {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.chalk-title {
+    font-family: var(--font-title);
+    font-size: 3rem;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.6);
+}
+
+.chalk-subtitle {
+    font-size: 1.4rem;
+    opacity: 0.85;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    max-width: 600px;
+    width: 100%;
+}
+
+/* Placar */
+.score-board {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    font-size: 1.8rem;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.score-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Tabuleiro (Linhas de Giz do Jogo da Velha) */
+.game-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.turn-indicator {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.board-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 1;
+}
+
+.board {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    gap: 0; /* Linhas continuas de giz */
+}
+
+/* Células ajustáveis com linhas internas estilo Giz */
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Tamanho da fonte escala dinamicamente com a grade */
+    font-size: calc(240px / var(--grid-size, 3));
+    line-height: 1;
+    font-family: var(--font-title);
+    cursor: pointer;
+    transition: background 0.2s;
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.85);
+    overflow: hidden;
+    
+    /* Linhas de giz entre as células */
+    border-right: 4px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 4px solid rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+.cell.no-border-right {
+    border-right: none;
+}
+
+.cell.no-border-bottom {
+    border-bottom: none;
+}
+
+.cell:hover:not(.taken) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.cell.taken {
+    cursor: not-allowed;
+}
+
+/* Risco animado de Giz */
+.chalk-strike-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.chalk-strike-svg line {
+    stroke: #ffffff;
+    stroke-width: 8;
+    stroke-linecap: round;
+    filter: drop-shadow(0px 0px 4px rgba(255, 255, 255, 0.9));
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: strike-draw 0.5s ease-out forwards;
+}
+
+@keyframes strike-draw {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+/* Botões */
+.chalk-btn {
+    background: transparent;
+    color: var(--chalk-white);
+    border: 2px solid var(--chalk-white);
+    padding: 8px 24px;
+    font-size: 1.5rem;
+    border-radius: 25px 5px 22px 4px/5px 20px 3px 22px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.chalk-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: scale(1.04) rotate(-1deg);
+}
+
+.chalk-btn.primary {
+    border-width: 3px;
+    font-weight: bold;
+}
+
+.chalk-btn.secondary {
+    border-style: dashed;
+}
+
+/* Modais */
+.chalk-modal {
+    border: none;
+    background: transparent;
+    margin: auto;
+    max-width: 480px;
+    width: 90%;
+}
+
+.chalk-modal::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+}
+
+.modal-title {
+    font-family: var(--font-title);
+    font-size: 2.2rem;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+    margin-bottom: 12px;
+    font-size: 1.3rem;
+}
+
+.chalk-input {
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--chalk-white);
+    border: 2px solid var(--chalk-white);
+    padding: 8px 12px;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    outline: none;
+}
+
+.chalk-input option {
+    background: #1c2b26;
+    color: var(--chalk-white);
+}
+
+.symbol-selector {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.radio-label input {
+    display: none;
+}
+
+.radio-custom {
+    display: inline-block;
+    padding: 8px 22px;
+    border: 2px dashed var(--chalk-white);
+    border-radius: 8px;
+    font-family: var(--font-title);
+    font-size: 1.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.radio-label input:checked + .radio-custom {
+    border-style: solid;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.chalk-note {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.result-message {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.score-summary-message {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    border-top: 1px dashed rgba(255, 255, 255, 0.4);
+    padding-top: 10px;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 10px;
+}

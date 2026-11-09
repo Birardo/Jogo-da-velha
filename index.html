@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha - Quadro Negro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Fredericka+the+Great&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main class="app-container">
+        <!-- Cabeçalho -->
+        <header class="chalk-header">
+            <h1 class="chalk-title">Jogo da Velha</h1>
+            <p class="chalk-subtitle">Desafie a Inteligência Artificial no Quadro Negro</p>
+        </header>
+
+        <!-- Placar -->
+        <section class="score-board chalk-box" id="score-board">
+            <div class="score-card">
+                <span class="score-label" id="player-label">Jogador (X)</span>
+                <span class="score-value" id="player-score">0</span>
+            </div>
+            <div class="score-divider">:</div>
+            <div class="score-card">
+                <span class="score-label" id="bot-label">Bot (O)</span>
+                <span class="score-value" id="bot-score">0</span>
+            </div>
+        </section>
+
+        <!-- Área Principal do Jogo -->
+        <section class="game-area chalk-box" id="game-area">
+            <div class="turn-indicator" id="turn-indicator">Vez de: <span id="current-turn-symbol">X</span></div>
+            
+            <div class="board-wrapper">
+                <div class="board" id="board"></div>
+                <!-- Risco animado de giz -->
+                <svg class="chalk-strike-svg" id="chalk-svg">
+                    <line id="chalk-line" x1="0" y1="0" x2="0" y2="0" />
+                </svg>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Configuração (Menu Inicial) -->
+    <dialog class="chalk-modal" id="setup-modal" open>
+        <div class="modal-content chalk-box">
+            <h2 class="modal-title">Configurações da Partida</h2>
+            
+            <form id="setup-form" method="dialog">
+                <div class="form-group">
+                    <label for="difficulty">Dificuldade do Bot:</label>
+                    <select id="difficulty" class="chalk-input">
+                        <option value="easy">Fácil (Iniciante)</option>
+                        <option value="medium" selected>Médio (Atento)</option>
+                        <option value="hard">Impossível (Mestre)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="board-size">Tamanho do Tabuleiro:</label>
+                    <select id="board-size" class="chalk-input">
+                        <option value="3" selected>3 x 3 (Requer 3 em linha)</option>
+                        <option value="4">4 x 4 (Requer 4 em linha)</option>
+                        <option value="5">5 x 5 (Requer 4 em linha)</option>
+                        <option value="6">6 x 6 (Requer 5 em linha)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Escolha seu Símbolo:</label>
+                    <div class="symbol-selector">
+                        <label class="radio-label">
+                            <input type="radio" name="symbol" value="X" checked>
+                            <span class="radio-custom">X</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="symbol" value="O">
+                            <span class="radio-custom">O</span>
+                        </label>
+                    </div>
+                    <small class="chalk-note">* O símbolo X sempre começa a partida!</small>
+                </div>
+
+                <button type="submit" class="chalk-btn primary">Iniciar Jogo</button>
+            </form>
+        </div>
+    </dialog>
+
+    <!-- Modal de Resultado -->
+    <dialog class="chalk-modal" id="result-modal">
+        <div class="modal-content chalk-box">
+            <h2 class="modal-title" id="result-title">Resultado</h2>
+            <p class="result-message" id="result-message"></p>
+            <p class="score-summary-message" id="score-summary-message"></p>
+            
+            <div class="modal-actions">
+                <button type="button" class="chalk-btn" id="btn-restart">Recomeçar</button>
+                <button type="button" class="chalk-btn secondary" id="btn-exit">Sair (Novo Jogo)</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+</html>
